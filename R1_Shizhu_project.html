@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Portfolio Optimization Problem</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Portfolio Optimization Problem">
+  <meta name="author" content="Shizhu Kathy Liu">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/default.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Portfolio Optimization Problem</h1>
+    <h2>Markowitz Mean-Variance Method</h2>
+    <p>Shizhu Kathy Liu<br/>New York University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Modern Portfolio Theory</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><strong>Which portfolio is the best?</strong> </p>
+
+<p>This question is probably as old as the stock-market itself.</p>
+
+<p>People spend a lot of time developing methods and strategies that come close to the &quot;perfect investment&quot;, that brings high returns coupled with low risk.</p>
+
+<p>As one of the most important and influential theories dealing this problem, <strong>Modern Portfolio Theory</strong> was developed by Harry Markowitz and published under the title &quot;Portfolio Selection&quot; in the 1952 <em>Journal of Finance</em>.</p>
+
+<p><strong>Let&#39;s review some math!</strong></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Basic Notions</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(m\) risky assets: \(i= 1, 2, \dots, m\) </li>
+<li>Single - Period Returns: \(\mathbf{R} = [R_{1,t}, R_{2,t}, \dots, R_{m,t}]^T\)</li>
+<li>Return calcualated from price: \(R_{1,t} = \frac{R_{1,t}-R_{1,t-1}}{R_{1,t-1}}\)</li>
+<li>Mean (Expected Returns) and Variance/Covariance of Returns:
+\[
+E[\mathbf{R}] = \mathbf{\alpha} = 
+\begin{bmatrix}
+\alpha_1   \\
+\vdots     \\
+\alpha_m  
+\end{bmatrix} , \quad
+\text{Cov}[\mathbf{R}] = \mathbf{\Sigma} = 
+\begin{bmatrix}
+\Sigma_{1,1}  & \cdots & \Sigma_{1,m} \\
+\vdots    & \ddots & \vdots  \\
+\Sigma_{m,1}  & \cdots & \Sigma_{m,m} 
+\end{bmatrix}
+\] </li>
+<li>Portfolio: \(m\) weights indicating the fraction of portfolio wealth held in each asset, \(\mathbf{w} = [w_1, \dots, w_m] : \, \sum^m_{i=1} = 1\) (fully invested)</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Basic Notions</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Portfolio Return: 
+\[R_\mathbf{w} = \mathbf{w}^T \mathbf{R} = \sum^m_{i=1} w_i R_i\]
+\[\alpha_{\mathbf{w}} = E[R_{\mathbf{w}}] = \mathbf{w}^T \mathbf{\alpha}\]
+\[ \sigma^2_{\mathbf{w}} = \text{var} [R_{\mathbf{w}}] = \mathbf{w}^T \Sigma \mathbf{w}\]</li>
+<li><p>People are risk averse, we evaluate different portfolios using the mean-variance pair of the portfolio: \((\alpha_{\mathbf{w}},\sigma^2_{\mathbf{w}} )\) with preference for:</p>
+
+<ul>
+<li>Higher expected return \(\alpha_{\mathbf{w}}\)</li>
+<li>Lower variance \(\text{Var}_{\mathbf{w}}\), or its square root \(\sigma_{\mathbf{w}}\), standard deviation </li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Problem 1 - My Project</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Risk Minimization:</h3>
+
+<p>For a given choice of target mean return \(\alpha_0\), choose the portfolio \(\mathbf{w}\) to
+<center>
+Minimize: \(\frac{1}{2} \mathbf{w}^T \Sigma \; \mathbf{w}\)</p>
+
+<p>Subject to: \(\mathbf{w}^T  \mathbf{\alpha} = \alpha_0\)</p>
+
+<p>\(\qquad \qquad  \sum^m_{i=1} = 1\)</p>
+
+<p></center></p>
+
+<h3>Solution:</h3>
+
+<p>Apply the method of <em>Lagrange multipliers</em> to the convex minimization problem subject to linear constrains, we can get optimal portfolio weights and variance. </p>
+
+<p>Matrix operation steps: Check reference [3] </p>
+
+<h3>Based on this problem, my project is to build and backtest strategies for 8 selected stocks since 2006.</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Other Classic Problems</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Expected Return Maximization:</h3>
+
+<p>For a given choice of target return variance \(\sigma_0^2\), choose the portfolio \(\mathbf{w}\) to
+<center>
+Maximize: \(E(R_{\mathbf{w}}) =\mathbf{w}^T \mathbf{\alpha}\)</p>
+
+<p>Subject to: \(\mathbf{w}^T \Sigma \;  \mathbf{w} = \sigma_0^2\)</p>
+
+<p>\(\qquad \qquad  \sum^m_{i=1} = 1\)</p>
+
+<p></center></p>
+
+<h3>Risk Aversion Optimization:</h3>
+
+<p>Let \(\lambda \geq 0\) denote the <em>Arrow-Pratt</em> risk aversion index gauging the trade-off between risk and return. Choose the portfolio \(\mathbf{w}\) to</p>
+
+<p><center>
+Maximize: \([E(R_{\mathbf{w}}) - \frac{1}{2} \lambda \text{Var}(R_{\mathbf{w}})] =\mathbf{w}^T \mathbf{\alpha} - \frac{1}{2} \lambda  \mathbf{w}^T \Sigma \; \mathbf{w}\)</p>
+
+<p>Subject to: \(\sum^m_{i=1} = 1 \qquad \qquad \qquad \qquad \qquad \qquad \qquad \, \,\)</p>
+
+<p></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Problem 1 - My Project</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>There are many other popular problems involved with more complicated constrains. My project is an application of Problem 1  - Risk Minimization.</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Investment Universe - Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Import closing stock price data from Yahoo Finance from 01/01/2006 to 03/31/2016.</h3>
+
+<ul>
+<li><p>Select following <span style="color:red">8</span> stocks</p></li>
+<li><p>Code is reproducible for different total number, different date range and different companies of stocks chosen </p></li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Company</th>
+<th>Ticker</th>
+<th>Industry</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>JPMorgan Chase &amp; Co.</td>
+<td>JPM</td>
+<td>Banks</td>
+</tr>
+<tr>
+<td>Alphabet Inc</td>
+<td>GOOGL</td>
+<td>Internet</td>
+</tr>
+<tr>
+<td>Walt Disney Co</td>
+<td>DIS</td>
+<td>Entertainment</td>
+</tr>
+<tr>
+<td>JC Penney Company Inc</td>
+<td>JCP</td>
+<td>Department Stores</td>
+</tr>
+<tr>
+<td>Johnson &amp; Johnson</td>
+<td>JNJ</td>
+<td>Drug Manufacturers</td>
+</tr>
+<tr>
+<td>Starbucks Corporation</td>
+<td>SBUX</td>
+<td>Eateries</td>
+</tr>
+<tr>
+<td>Exxon Mobil Corporation</td>
+<td>XOM</td>
+<td>Oil &amp; Gas</td>
+</tr>
+<tr>
+<td>Starwood Hotels</td>
+<td>HOT</td>
+<td>Lodging</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Investment Strategies -Global Setting</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Objective: Minimize Portfolio volatility given a <span style="color:red">15%</span> annual return target</p></li>
+<li><p>Porfolio will be fuly invested (sum of weights = <span style="color:red">1</span>)</p></li>
+<li><p>Long Short is allowed ( weights between <span style="color:red">200%</span> and <span style="color:red">-200%</span> )</p></li>
+<li><p>Portfolio is <span style="color:red">weekly</span> rebalanced</p></li>
+</ul>
+
+<p><img src="logo.jpg" alt=""></p>
+
+<h4>Note: all parameters are replaceable in the code</h4>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Estimation of Expected Returns and Covariance</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Expected Returns</h3>
+
+<h3>Historic returns are often used to estimate expecetd returns</h3>
+
+<ul>
+<li>Sample Estimator for daily returns with  <span style="color:red">60</span> days of observation for expected returns. </li>
+</ul>
+
+<h3>Covariance Candidates are:</h3>
+
+<ul>
+<li><p>Sample Covariance with <span style="color:red">200</span> days of observation for returns, configuration referred as &quot;long term&quot;, &quot;long&quot; or &quot;l&quot;</p></li>
+<li><p>Sample Covariance with <span style="color:red">120</span> days of observation for returns, configuration referred as &quot;medium term&quot;,&quot;medium&quot; or &quot;m&quot;</p></li>
+<li><p>Sample Covariance with <span style="color:red">60</span> days of observation for returns, configuration referred as &quot;short term&quot;, &quot;short&quot; or &quot;s&quot;</p></li>
+</ul>
+
+<h4>Note: all parameters are replaceable in the code</h4>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Libraries and Datasets</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(rJava); library(tseries); library(quadprog) 
+library(PerformanceAnalytics); library(ggplot2)
+library(xlsx); library(data.table);library(xtable)
+
+JPM &lt;- get.hist.quote(instrument=&quot;JPM&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+GOOGL &lt;- get.hist.quote(instrument=&quot;GOOGL&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+DIS &lt;- get.hist.quote(instrument=&quot;DIS&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+JCP &lt;- get.hist.quote(instrument=&quot;JCP&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+JNJ &lt;- get.hist.quote(instrument=&quot;JNJ&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+SBUX &lt;- get.hist.quote(instrument=&quot;SBUX&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+XOM &lt;- get.hist.quote(instrument=&quot;XOM&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+HOT &lt;- get.hist.quote(instrument=&quot;HOT&quot;, start=&quot;2006-01-01&quot;, end=&quot;2016-3-31&quot;, quote=&quot;Close&quot;)
+
+
+price_raw &lt;- cbind(JPM, GOOGL, DIS, JCP, JNJ, SBUX, XOM, HOT)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <article data-timings="">
+    <hr>
+
+<h2>Daily Returns</h2>
+
+<pre><code class="r">return_daily &lt;- diff(price_raw)/lag(price_raw, k=-1)
+colnames(return_daily) &lt;- c(&quot;JPM&quot;, &quot;GOOGL&quot;, &quot;DIS&quot;, &quot;JCP&quot;, &quot;JNJ&quot;, &quot;SBUX&quot;, &quot;XOM&quot;, &quot;HOT&quot;)
+
+# head(return_daily, 4)
+</code></pre>
+
+<!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 15:57:49 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> date </th> <th> JPM </th> <th> GOOGL </th> <th> DIS </th> <th> JCP </th> <th> JNJ </th> <th> SBUX </th> <th> XOM </th> <th> HOT </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> 2006-01-04 </td> <td align="right"> -0.01418 </td> <td align="right"> 0.02300 </td> <td align="right"> -0.01680 </td> <td align="right"> 0.01382 </td> <td align="right"> 0.01541 </td> <td align="right"> 0.02592 </td> <td align="right"> 0.00171 </td> <td align="right"> -0.00906 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> 2006-01-05 </td> <td align="right"> 0.00303 </td> <td align="right"> 0.01348 </td> <td align="right"> 0.01751 </td> <td align="right"> -0.03180 </td> <td align="right"> -0.00415 </td> <td align="right"> -0.00189 </td> <td align="right"> -0.00495 </td> <td align="right"> 0.00142 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> 2006-01-06 </td> <td align="right"> 0.00705 </td> <td align="right"> 0.03196 </td> <td align="right"> 0.01352 </td> <td align="right"> 0.01047 </td> <td align="right"> 0.00449 </td> <td align="right"> 0.00032 </td> <td align="right"> 0.01973 </td> <td align="right"> 0.00850 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> 2006-01-09 </td> <td align="right"> 0.01624 </td> <td align="right"> 0.00266 </td> <td align="right"> 0.01051 </td> <td align="right"> 0.00196 </td> <td align="right"> 0.00623 </td> <td align="right"> -0.01012 </td> <td align="right"> -0.00050 </td> <td align="right"> 0.00703 </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Solve the optimization problem</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">n1 &lt;- nrow(return_daily)
+n2 &lt;- ncol(return_daily)
+return_daily &lt;- cbind(return_daily, portfolio=rep(NA,n1))
+weight &lt;- matrix(NA, nrow = n1, ncol = n2)
+i = 1 + 60  # short: i = 1 + 60 
+             # medium: i = 1 + 120
+             # long:i = 1 + 200
+             # If you don&#39;t want to observe from 2006-01-04
+             # change 1 to b &lt;- which(format(index(return_daily), &quot;%Y-%m-%d&quot;) == &#39;2008-01-05&#39;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Solve the optimization problem</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">while (i &lt;= n1){
+  return_expect &lt;- colMeans(return_daily[(i-60):(i-1), 1:n2], na.rm=TRUE) 
+          # 60 days of observation for expected returns, fixed in my project, can change if you desire different estimator
+  Dmat &lt;- cov(return_daily[(i-60):(i-1), 1:n2], use = &quot;complete.obs&quot;) 
+          # Sample Covariance with 60 days of observation for returns, change to m: 120; l: 200
+  Amat &lt;- cbind(1, return_expect, diag(1,n2), diag(-1,n2))
+  target &lt;- 0.15 / 250
+         # target yearly return 15%, fixed in my project, can change if you desire different constrain
+  bvec &lt;- c(1, target, -2+rep(0,n2), -2+rep(0,n2))
+  dvec &lt;- rep(0,n2)
+  opt_sol &lt;- solve.QP(Dmat,dvec,Amat,bvec, meq=2, factorized=FALSE)$solution
+         # solve the optimization problem
+  weight[i+0:min(4,n1-i), ] &lt;- matrix(rep(opt_sol, min(5,n1-i+1)), ncol=n2, byrow=T)
+         # record weight for each asset
+  return_daily[i+0:min(4,n1-i), n2+1] &lt;- return_daily[i+0:min(4,n1-i), 1:n2] %*% opt_sol
+         # record new daily return for each asset and portfolio overall
+  i = i + 5 
+         # weekly rebalance portfolio, adjust weight per 5 trading day
+         # fixed in my project, can change if you desire different condition
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Record Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Record new daily return for each asset and portfolio overall</li>
+</ul>
+
+<pre><code class="r">daily_s &lt;- return_daily
+
+# tail(daily_s,2)
+</code></pre>
+
+<!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 15:59:41 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> date </th> <th> JPM </th> <th> GOOGL </th> <th> DIS </th> <th> JCP </th> <th> JNJ </th> <th> SBUX </th> <th> XOM </th> <th> HOT </th> <th> portfolio </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> 2012-01-03 </td> <td align="right"> 0.05203 </td> <td align="right"> 0.03021 </td> <td align="right"> 0.02160 </td> <td align="right"> -0.00370 </td> <td align="right"> 0.00457 </td> <td align="right"> -0.01565 </td> <td align="right"> 0.01463 </td> <td align="right"> 0.03044 </td> <td align="right"> 0.00041 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> 2012-01-04 </td> <td align="right"> -0.00086 </td> <td align="right"> 0.00431 </td> <td align="right"> 0.01410 </td> <td align="right"> -0.00314 </td> <td align="right"> -0.00607 </td> <td align="right"> 0.01943 </td> <td align="right"> 0.00023 </td> <td align="right"> 0.00020 </td> <td align="right"> -0.01102 </td> </tr>
+   </table>
+
+<ul>
+<li>extract portfolio daily return</li>
+</ul>
+
+<pre><code class="r">portfolio_s &lt;- return_daily[,&quot;portfolio&quot;]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Record Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>record weight for each asset</li>
+</ul>
+
+<pre><code class="r">weight_s &lt;- data.frame(weight)
+rownames(weight_s) &lt;- as.character(index(daily_s))
+colnames(weight_s) &lt;- colnames(daily_s)[1:8]
+</code></pre>
+
+<p>In the following page, we will check our global setting:</p>
+
+<ol>
+<li><p>full investment: sum of the weight = 1</p></li>
+<li><p>portfolio is weekly balanced</p></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Record Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Fully invested: sum of weight = 1</p>
+
+<pre><code class="r">sum(weight_s[100,1:8])
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">sum(weight_s[200,1:8])
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Record Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>weight adjusted every five days</p>
+
+<pre><code class="r"># tail(weight_s, 9)
+</code></pre>
+
+<!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 16:11:59 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> date </th> <th> JPM </th> <th> GOOGL </th> <th> DIS </th> <th> JCP </th> <th> JNJ </th> <th> SBUX </th> <th> XOM </th> <th> HOT </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> 2016-03-18 </td> <td align="right"> -0.10548 </td> <td align="right"> 0.29112 </td> <td align="right"> 0.18929 </td> <td align="right"> 0.04125 </td> <td align="right"> 0.62734 </td> <td align="right"> -0.13745 </td> <td align="right"> 0.11437 </td> <td align="right"> -0.02044 </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> 2016-03-21 </td> <td align="right"> -0.10548 </td> <td align="right"> 0.29112 </td> <td align="right"> 0.18929 </td> <td align="right"> 0.04125 </td> <td align="right"> 0.62734 </td> <td align="right"> -0.13745 </td> <td align="right"> 0.11437 </td> <td align="right"> -0.02044 </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> 2016-03-22 </td> <td align="right"> -0.07360 </td> <td align="right"> 0.28233 </td> <td align="right"> 0.24746 </td> <td align="right"> 0.03308 </td> <td align="right"> 0.65960 </td> <td align="right"> -0.16801 </td> <td align="right"> 0.05094 </td> <td align="right"> -0.03180 </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> 2016-03-23 </td> <td align="right"> -0.07360 </td> <td align="right"> 0.28233 </td> <td align="right"> 0.24746 </td> <td align="right"> 0.03308 </td> <td align="right"> 0.65960 </td> <td align="right"> -0.16801 </td> <td align="right"> 0.05094 </td> <td align="right"> -0.03180 </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> 2016-03-24 </td> <td align="right"> -0.07360 </td> <td align="right"> 0.28233 </td> <td align="right"> 0.24746 </td> <td align="right"> 0.03308 </td> <td align="right"> 0.65960 </td> <td align="right"> -0.16801 </td> <td align="right"> 0.05094 </td> <td align="right"> -0.03180 </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> 2016-03-28 </td> <td align="right"> -0.07360 </td> <td align="right"> 0.28233 </td> <td align="right"> 0.24746 </td> <td align="right"> 0.03308 </td> <td align="right"> 0.65960 </td> <td align="right"> -0.16801 </td> <td align="right"> 0.05094 </td> <td align="right"> -0.03180 </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> 2016-03-29 </td> <td align="right"> -0.07360 </td> <td align="right"> 0.28233 </td> <td align="right"> 0.24746 </td> <td align="right"> 0.03308 </td> <td align="right"> 0.65960 </td> <td align="right"> -0.16801 </td> <td align="right"> 0.05094 </td> <td align="right"> -0.03180 </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> 2016-03-30 </td> <td align="right"> -0.05966 </td> <td align="right"> 0.29868 </td> <td align="right"> 0.24171 </td> <td align="right"> 0.03069 </td> <td align="right"> 0.61849 </td> <td align="right"> -0.17080 </td> <td align="right"> 0.06497 </td> <td align="right"> -0.02408 </td> </tr>
+  <tr> <td align="right"> 9 </td> <td> 2016-03-31 </td> <td align="right"> -0.05966 </td> <td align="right"> 0.29868 </td> <td align="right"> 0.24171 </td> <td align="right"> 0.03069 </td> <td align="right"> 0.61849 </td> <td align="right"> -0.17080 </td> <td align="right"> 0.06497 </td> <td align="right"> -0.02408 </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Pick some dates to visuaize weight under each stock on a particular date</h3>
+
+<ul>
+<li>can change to the following &quot;2008-09-15&quot; to any trading day</li>
+</ul>
+
+<pre><code class="r">weight_s &lt;- setDT(weight_s, keep.rownames = TRUE)[]
+bar &lt;- subset(weight_s, rn == &quot;2008-09-15&quot;)
+bar_melt &lt;- melt(bar, id.vars=&quot;rn&quot;)
+
+ggplot(bar_melt, aes(x=variable, y=value)) + 
+  geom_bar(stat=&quot;identity&quot;, position = &quot;identity&quot;,aes(fill=variable)) +
+  geom_text(aes(x=variable, y=value, label=round(value, digits = 4))) +
+  labs(x=&quot;Ticker Symbol&quot;,y=&quot;weight_s&quot;) +
+  theme(legend.title=element_blank())
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>2008-09-15： when Lehman Brothers filed bankruptcy</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-12-1.png" alt="plot of chunk unnamed-chunk-12"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>2015-12-16： when Fed Raises Key Interest Rate for First Time in Almost a Decade</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-13-1.png" alt="plot of chunk unnamed-chunk-13"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">autoplot(daily_s$portfolio[1:2577], main=&quot;Portfolio_s Daily Return&quot;, facets=NULL) + 
+    xlab(&quot;time&quot;) + ylab(&quot;Daily Return&quot;) + 
+    geom_vline(xintercept=as.numeric(index(daily_s[c(674,879),])), linetype=&quot;dashed&quot;)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-14-1.png" alt="plot of chunk unnamed-chunk-14"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Some observations:</h3>
+
+<ul>
+<li><p>During crisis period (2008-2010), return volatility is much lager than usual.</p></li>
+<li><p>For a extreme volatility in one day, it is usually caused by company splitted its stock, the price became half instantly</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Record Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Graphs about daily return is not natural, investors feel comfortable to look at Cumulative PnL (returns)</p>
+
+<h3>Record Cumulative returns</h3>
+
+<pre><code class="r">cummu_s &lt;- daily_s
+for (j in 1:n1)
+  cummu_s[j, ] &lt;- apply(daily_s[1:j, ], 2, Return.cumulative) + 1
+
+autoplot(cummu_s$portfolio[1:2577], main=&quot;portfolio_s cumulative PnL full period&quot;, facets=NULL) + 
+      xlab(&quot;time&quot;) + ylab(&quot;Cumulative Daily Return&quot;) +
+     geom_vline(xintercept=as.numeric(index(cummu_s[c(674,879),])), linetype=&quot;dashed&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-16-1.png" alt="plot of chunk unnamed-chunk-16"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>Visualize Solution: short-term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-17-1.png" alt="plot of chunk unnamed-chunk-17"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Same steps for medium and long term estimator</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Now we can apply the same methods by using medium and long term estimator.</h3>
+
+<h3>Recall:</h3>
+
+<ul>
+<li><p>Sample Covariance with <span style="color:red">200</span> days of observation for returns, configuration referred as &quot;long term&quot;, &quot;long&quot; or &quot;l&quot;</p></li>
+<li><p>Sample Covariance with <span style="color:red">120</span> days of observation for returns, configuration referred as &quot;medium term&quot;,&quot;medium&quot; or &quot;m&quot;</p></li>
+<li><p>Sample Covariance with <span style="color:red">60</span> days of observation for returns, configuration referred as &quot;short term&quot;, &quot;short&quot; or &quot;s&quot;</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Comparison between estimators</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">cummu &lt;- cbind(cummu_s[,&quot;portfolio&quot;], cummu_m[,&quot;portfolio&quot;], cummu_l[,&quot;portfolio&quot;])
+colnames(cummu) &lt;- c(&quot;short&quot;,&quot;mediam&quot;,&quot;long&quot;)
+
+
+
+cummu &lt;- data.frame(cummu)
+cummu_date &lt;- setDT(cummu, keep.rownames = TRUE)[]
+cummu_melt &lt;- melt(cummu_date, id.vars=&quot;rn&quot;)
+cummu_melt$rn &lt;- as.Date(cummu_melt$rn)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>Comparison between estimators</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-19-1.png" alt="plot of chunk unnamed-chunk-19"></p>
+
+<h3>Is it the end of our story?</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-29" style="background:;">
+  <hgroup>
+    <h2>Comparison between estimators</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Crisis:</p>
+
+<ul>
+<li>Begin of the crisis: 2008 Sep 7, The Federal Housing Finance Agency (FHFA) places Fannie Mae and Freddie Mac in government conservatorship.  A week later, Lehman Brothers filed bankruptcy.<br></li>
+<li>It ended in June 2009, according to the U.S. National Bureau of Economic Research (NBER)</li>
+</ul></li>
+<li><p>data set (return_daily)</p>
+
+<ul>
+<li>Before crisis: return_daily[,1:674]</li>
+<li>During crisis: return_daily[,675:878]</li>
+<li>After crisis: return_daily[,879:1512]</li>
+</ul></li>
+<li><p>Nobody evaluates a portfolio by is just looking at the cumulative PnL</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-30" style="background:;">
+  <hgroup>
+    <h2>Performance Indicators</h2>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Notation</th>
+<th>Definition</th>
+<th>Reference</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>mean_daily_return</td>
+<td>average of daily return</td>
+<td></td>
+</tr>
+<tr>
+<td>mean_daily_return_annual</td>
+<td>annualized  average of daily return</td>
+<td>mean_daily_return * 252</td>
+</tr>
+<tr>
+<td>min_daily_return</td>
+<td>minimum daily return</td>
+<td></td>
+</tr>
+<tr>
+<td>max_daily_return</td>
+<td>maximum daily return</td>
+<td></td>
+</tr>
+<tr>
+<td>volatility</td>
+<td>standard deviation of daily return</td>
+<td><a href="http://www.investopedia.com/terms/v/volatility.asp">click</a></td>
+</tr>
+<tr>
+<td>volatility_annual</td>
+<td>annualized standard deviation of daily return</td>
+<td>volatility * \(\sqrt{252}\)</td>
+</tr>
+<tr>
+<td>Sharpe_ratio</td>
+<td>Sharpe Ratio</td>
+<td><a href="http://www.investopedia.com/terms/s/sharperatio.asp">click</a></td>
+</tr>
+<tr>
+<td>Sharpe_ratio_annual</td>
+<td>annualized Sharpe Ratio</td>
+<td><a href="http://www.iijournals.com/doi/abs/10.3905/jpm.1994.409501">click</a></td>
+</tr>
+<tr>
+<td>Sortino_ratio</td>
+<td>Sortino Ratio</td>
+<td><a href="http://www.investopedia.com/terms/s/sortinoratio.asp">click</a></td>
+</tr>
+<tr>
+<td>Skewness_Kurtosis_ratio</td>
+<td>Skewness divide Kurtosis</td>
+<td><a href="https://www.amazon.com/Practical-Portfolio-Performance-Measurement-Attribution/dp/0470059281?ie=UTF8&amp;*Version*=1&amp;*entries*=0">click</a></td>
+</tr>
+<tr>
+<td>Modifed_VaR</td>
+<td>Modified Value at Risk</td>
+<td><a href="https://www.evestment.com/resources/investment-statistics-guide/modified-value-at-risk">click</a></td>
+</tr>
+<tr>
+<td>Modifed_VaR_annual</td>
+<td>annualized Modified Value at Risk</td>
+<td></td>
+</tr>
+<tr>
+<td>Max_drawdown</td>
+<td>Maximum Drawdown</td>
+<td><a href="http://www.investopedia.com/terms/m/maximum-drawdown-mdd.asp">click</a></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-31" style="background:;">
+  <hgroup>
+    <h2>Performance Report: Before the Crisis</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(xtable)
+print(xtable(report_b,digits=5), type = &quot;html&quot;)
+</code></pre>
+
+<!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 16:03:30 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> before crisis_s </th> <th> before crisis_m </th> <th> before crisis_l </th> <th> vote </th>  </tr>
+  <tr> <td align="right"> mean_daily_return </td> <td align="right"> 0.00052 </td> <td align="right"> 0.00045 </td> <td align="right"> 0.00005 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> mean_daily_return_annual </td> <td align="right"> 0.13169 </td> <td align="right"> 0.11281 </td> <td align="right"> 0.01282 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> min_daily_return </td> <td align="right"> -0.03136 </td> <td align="right"> -0.03578 </td> <td align="right"> -0.03955 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> max_daily_return </td> <td align="right"> 0.02967 </td> <td align="right"> 0.02840 </td> <td align="right"> 0.02276 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> volatility </td> <td align="right"> 0.00806 </td> <td align="right"> 0.00804 </td> <td align="right"> 0.00816 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> volatility_annual </td> <td align="right"> 0.12788 </td> <td align="right"> 0.12758 </td> <td align="right"> 0.12947 </td> <td align="right">      2 </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio </td> <td align="right"> 0.06487 </td> <td align="right"> 0.05570 </td> <td align="right"> 0.00624 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio_annual </td> <td align="right"> 1.02772 </td> <td align="right"> 0.86472 </td> <td align="right"> 0.03428 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> Sortino_ratio </td> <td align="right"> -0.01311 </td> <td align="right"> -0.02549 </td> <td align="right"> -0.08548 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> Skewness_Kurtosis_ratio </td> <td align="right"> -0.06596 </td> <td align="right"> -0.08434 </td> <td align="right"> -0.13038 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR </td> <td align="right"> -0.01314 </td> <td align="right"> -0.01337 </td> <td align="right"> -0.01447 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR_annual </td> <td align="right"> -0.01314 </td> <td align="right"> -0.01337 </td> <td align="right"> -0.01447 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> Max_drawdown </td> <td align="right"> 0.15402 </td> <td align="right"> 0.17585 </td> <td align="right"> 0.18136 </td> <td align="right">      1 </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-32" style="background:;">
+  <hgroup>
+    <h2>Before the Crisis:</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Short-term estimator works the best</p>
+
+<ul>
+<li>highest daily return: closest to 15% target</li>
+<li>annualized Shape Ratio is greater than 1</li>
+</ul></li>
+<li><p>volatility</p>
+
+<ul>
+<li>medium estimator has smallest volatility</li>
+<li>volatility from short estimator is about the same </li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <h2>Performance Report: During the Crisis</h2>
+  </hgroup>
+  <article data-timings="">
+    <!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 16:03:30 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> during crisis_s </th> <th> during crisis_m </th> <th> during crisis_l </th> <th> vote </th>  </tr>
+  <tr> <td align="right"> mean_daily_return </td> <td align="right"> -0.00196 </td> <td align="right"> -0.00126 </td> <td align="right"> -0.00145 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> mean_daily_return_annual </td> <td align="right"> -0.49460 </td> <td align="right"> -0.31791 </td> <td align="right"> -0.36456 </td> <td align="right">      2 </td> </tr>
+  <tr> <td align="right"> min_daily_return </td> <td align="right"> -0.09695 </td> <td align="right"> -0.09400 </td> <td align="right"> -0.09198 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> max_daily_return </td> <td align="right"> 0.11205 </td> <td align="right"> 0.11263 </td> <td align="right"> 0.11630 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> volatility </td> <td align="right"> 0.02366 </td> <td align="right"> 0.02383 </td> <td align="right"> 0.02336 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> volatility_annual </td> <td align="right"> 0.37553 </td> <td align="right"> 0.37823 </td> <td align="right"> 0.37084 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio </td> <td align="right"> -0.08297 </td> <td align="right"> -0.05295 </td> <td align="right"> -0.06193 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio_annual </td> <td align="right"> -1.15087 </td> <td align="right"> -0.85277 </td> <td align="right"> -0.94799 </td> <td align="right">      2 </td> </tr>
+  <tr> <td align="right"> Sortino_ratio </td> <td align="right"> -0.13586 </td> <td align="right"> -0.10435 </td> <td align="right"> -0.11782 </td> <td align="right">      2 </td> </tr>
+  <tr> <td align="right"> Skewness_Kurtosis_ratio </td> <td align="right"> -0.03721 </td> <td align="right"> 0.02628 </td> <td align="right"> 0.05161 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR </td> <td align="right"> -0.04056 </td> <td align="right"> -0.03733 </td> <td align="right"> -0.03515 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR_annual </td> <td align="right"> -0.04056 </td> <td align="right"> -0.03733 </td> <td align="right"> -0.03515 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> Max_drawdown </td> <td align="right"> 0.41948 </td> <td align="right"> 0.39171 </td> <td align="right"> 0.40982 </td> <td align="right">      2 </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-34" style="background:;">
+  <hgroup>
+    <h2>During the Crisis:</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>medium and long term estimator work better than short</p>
+
+<ul>
+<li>medium estimator has highest return: though it is negative, far from our target</li>
+<li>long term estimator has smallest volatility</li>
+<li>medium estimator has better result in Shape Ratio, Sortino ratio and Maximum Drawdown</li>
+</ul></li>
+<li><p>Note: the portfolio during crisis has negative return. </p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-35" style="background:;">
+  <hgroup>
+    <h2>Performance Report: After the Crisis</h2>
+  </hgroup>
+  <article data-timings="">
+    <!-- html table generated in R 3.2.4 by xtable 1.8-2 package -->
+
+<!-- Tue Jun 21 16:03:30 2016 -->
+
+<table border=1>
+<tr> <th>  </th> <th> after crisis_s </th> <th> after crisis_m </th> <th> after crisis_l </th> <th> vote </th>  </tr>
+  <tr> <td align="right"> mean_daily_return </td> <td align="right"> 0.00020 </td> <td align="right"> 0.00026 </td> <td align="right"> 0.00033 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> mean_daily_return_annual </td> <td align="right"> 0.05022 </td> <td align="right"> 0.06577 </td> <td align="right"> 0.08299 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> min_daily_return </td> <td align="right"> -0.04767 </td> <td align="right"> -0.04425 </td> <td align="right"> -0.04489 </td> <td align="right">      2 </td> </tr>
+  <tr> <td align="right"> max_daily_return </td> <td align="right"> 0.06541 </td> <td align="right"> 0.05727 </td> <td align="right"> 0.05206 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> volatility </td> <td align="right"> 0.01045 </td> <td align="right"> 0.01003 </td> <td align="right"> 0.01001 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> volatility_annual </td> <td align="right"> 0.16582 </td> <td align="right"> 0.15928 </td> <td align="right"> 0.15898 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio </td> <td align="right"> 0.01908 </td> <td align="right"> 0.02601 </td> <td align="right"> 0.03288 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Sharpe_ratio_annual </td> <td align="right"> 0.22428 </td> <td align="right"> 0.34241 </td> <td align="right"> 0.45858 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> Sortino_ratio </td> <td align="right"> -0.05314 </td> <td align="right"> -0.04639 </td> <td align="right"> -0.03757 </td> <td align="right">      3 </td> </tr>
+  <tr> <td align="right"> Skewness_Kurtosis_ratio </td> <td align="right"> 0.03770 </td> <td align="right"> 0.01298 </td> <td align="right"> 0.02145 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR </td> <td align="right"> -0.01526 </td> <td align="right"> -0.01525 </td> <td align="right"> -0.01517 </td> <td align="right">  </td> </tr>
+  <tr> <td align="right"> Modifed_VaR_annual </td> <td align="right"> -0.01526 </td> <td align="right"> -0.01525 </td> <td align="right"> -0.01517 </td> <td align="right">      1 </td> </tr>
+  <tr> <td align="right"> Max_drawdown </td> <td align="right"> 0.20524 </td> <td align="right"> 0.19178 </td> <td align="right"> 0.22438 </td> <td align="right">      2 </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-36" style="background:;">
+  <hgroup>
+    <h2>After the Crisis:</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Long-term estimator works the best
+
+<ul>
+<li>highest daily return</li>
+<li>lowest volatility</li>
+<li>better result in Shape Ratio and Sortino ratio </li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-37" style="background:;">
+  <hgroup>
+    <h2>Summary</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Same estimation method would have different performances under different market enviroment.</p></li>
+<li><p>When I write the code, I tried to make it more reproduceble; you may simply change/add/remove the ticker symbols, change the number of days for estimators, or adjust the time period, to create your own portfolio and visualization.</p></li>
+<li><p>Next step:</p>
+
+<ul>
+<li>Maybe a shiny app ?</li>
+<li>Make expected return estimator fancier: currently I am using return in previous 60 trading days to estimate, this naive attempt can be replaced by many other techniques</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-38" style="background:;">
+  <hgroup>
+    <h2>Reference</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><a href="http://www.investopedia.com/articles/06/mpt.asp#ixzz4B2w779uJ">http://www.investopedia.com/articles/06/mpt.asp#ixzz4B2w779uJ</a> </li>
+<li><a href="http://www.efalken.com/LowVolClassics/markowitz_JF1952.pdf">http://www.efalken.com/LowVolClassics/markowitz_JF1952.pdf</a></li>
+<li><a href="http://ocw.mit.edu/courses/mathematics/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/lecture-notes/MIT18_S096F13_lecnote14.pdf">http://ocw.mit.edu/courses/mathematics/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/lecture-notes/MIT18_S096F13_lecnote14.pdf</a></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-39" style="background:;">
+  <hgroup>
+    <h2>The End</h2>
+  </hgroup>
+  <article data-timings="">
+    <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({  "HTML-CSS": { minScaleAdjust: 125, availableFonts: [] }  });
+</script>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Modern Portfolio Theory'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Basic Notions'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Basic Notions'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Problem 1 - My Project'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Other Classic Problems'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Problem 1 - My Project'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Investment Universe - Data'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Investment Strategies -Global Setting'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Estimation of Expected Returns and Covariance'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Libraries and Datasets'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='NA'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Solve the optimization problem'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Solve the optimization problem'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Record Solution: short-term estimator'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Record Solution: short-term estimator'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Record Solution: short-term estimator'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Record Solution: short-term estimator'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Visualize Solution: short-term estimator'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Visualize Solution: short-term estimator'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Visualize Solution: short-term estimator'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Visualize Solution: short-term estimator'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Visualize Solution: short-term estimator'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Record Solution: short-term estimator'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Visualize Solution: short-term estimator'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Visualize Solution: short-term estimator'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Same steps for medium and long term estimator'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Comparison between estimators'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Comparison between estimators'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Comparison between estimators'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Performance Indicators'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Performance Report: Before the Crisis'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Before the Crisis:'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Performance Report: During the Crisis'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='During the Crisis:'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Performance Report: After the Crisis'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='After the Crisis:'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Summary'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Reference'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='The End'>
+         39
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

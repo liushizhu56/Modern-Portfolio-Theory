@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/191208/f7fdd00ccc404294aaeb202f1845d9e2
+bundleId: https://api.rpubs.com/api/v1/document/191208/f7fdd00ccc404294aaeb202f1845d9e2
+url: http://rpubs.com/shizhuliu/191208
+when: 1466545985.95826
